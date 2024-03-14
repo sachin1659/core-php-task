@@ -22,7 +22,7 @@
 
     <div id="user-creation" style="display: none;">
       <h2>Create Employee</h2>
-      <form id="user-form" action="/classes/functions.php" method="post">
+      <form id="user-form" action="/classes/app.php" method="post">
         <input type="hidden" name="action" value="register"> <div class="form-group">
           <label for="fname">First Name:</label>
           <input type="text" class="form-control" id="fname" name="fname" required>

@@ -8,7 +8,7 @@
 <body>
   <div class="container mt-5">
     <h1>Sign In</h1>
-    <form id="sign-in-form" action="/classes/functions.php" method="post">
+    <form id="sign-in-form" action="/classes/app.php" method="post">
     <input type="hidden" name="action" value="signin"> <div class="form-group">
       <div class="form-group">
         <label for="username">Username:</label>
@@ -38,7 +38,7 @@
         </div>
         <div class="modal-body" id="messageContent">
           <!-- Message content will be dynamically inserted here -->
-          <?php if(isset($_GET['message'])) {  die('sdfsdf');?>
+          <?php if(isset($_GET['message'])) { ?>
              <h1> Invalid username and password </h1>
           <?php } ?>
         </div>

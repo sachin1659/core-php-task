@@ -24,8 +24,8 @@ class Users {
         $this->conn->close();
     }
 
-    public function signIn($email, $password) {
-        die('sdjkf');
+    public function signin($email, $password) {
+        die(__METHOD__);
         try {
             $tableExists = "SHOW TABLES LIKE 'users'";
 
