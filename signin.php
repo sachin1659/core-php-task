@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Sign In</h1>
+    <form id="sign-in-form" action="/classes/functions.php" method="post">
+    <input type="hidden" name="action" value="signin"> <div class="form-group">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="remember-me">
+        <label class="form-check-label" for="remember-me">Remember Me</label>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Sign In</button>
+    </form>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="messageModalLabel">Message</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="messageContent">
+          <!-- Message content will be dynamically inserted here -->
+          <?php if(isset($_GET['message'])) {  die('sdfsdf');?>
+             <h1> Invalid username and password </h1>
+          <?php } ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript code for showing the popup with a message
+    function showMessage(message) {
+      document.getElementById("messageContent").innerHTML = message;
+      $('#messageModal').modal('show');
+    }
+
+    // Check if a message is passed in the URL
+    window.onload = function() {
+      var message = "<?php echo isset($_GET['message']) ? htmlspecialchars($_GET['message']) : ''; ?>";
+      if (message !== "") {
+        showMessage(message);
+      }
+    };
+  </script>
+
+</body>
+</html>
