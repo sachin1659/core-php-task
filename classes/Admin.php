@@ -60,7 +60,7 @@ class Admin {
             $stmt->bind_param("sssss", $fname, $lname, $email, $phone, $password);
             if ($stmt->execute() === TRUE) {
                 echo "Employee created successfully username is ".$fname." &password is ".$password;
-                header("Location: /signin.php");
+                header("Location: /signin.phtml");
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }

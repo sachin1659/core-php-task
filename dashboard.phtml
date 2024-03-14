@@ -1,0 +1,35 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<?php 
+session_start();
+// Check if user is logged in
+if(!isset($_SESSION['username'])) {
+    header("Location: /signin.php"); // Redirect to login page if not logged in
+    exit;
+}
+
+// Display dashboard content
+echo "Welcome to the Dashboard, " . $_SESSION['username'] . "!<br>";
+echo "<a href='#' onclick='changePassword();'>Change Password</a> | ";
+echo "<a href='classes/Users.php?action=signout'>Sign Out</a>";
+
+// JavaScript function for displaying the custom dialog box
+?>
+<script>
+function changePassword() {
+    var newPassword = prompt("Please enter your new password:");
+    
+    // If user enters a password
+    if (newPassword !== null) {
+        $.ajax({
+            url:"Users.php",    //the page containing php script
+            type: "post",    //request type,
+            dataType: 'json',
+            action: 'changePassword',
+            data: { password: newPassword, email: "<?=$_SESSION['username']?>"},
+            success:function(result){
+                alert('Password Changed successfully');
+            }
+        });
+    }
+}
+</script>

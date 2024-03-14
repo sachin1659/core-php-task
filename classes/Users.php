@@ -1,70 +1,94 @@
-<?php declare(strict_types=1);
+<?php
 
-//require('classes/User.php');
-namespace PHP101\classes\Users;
+declare(strict_types=1);
+
+session_start();
 
 class Users {
 
     private $conn;
 
     public function __construct() {
-
         $servername = "localhost";
         $username = "root"; 
         $password = "@Gtxrtx399#"; 
         $dbname = "PHP_TASK"; 
         
+        // Establish database connection
         $this->conn = new mysqli($servername, $username, $password, $dbname);
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
-    }
+    }  
 
     public function __destruct() {
+        // Close database connection when object is destroyed
         $this->conn->close();
     }
 
     public function signin($email, $password) {
-        die(__METHOD__);
-        try {
-            $tableExists = "SHOW TABLES LIKE 'users'";
+        $tableExists = "SHOW TABLES LIKE 'users'";
+        
+        // Check if the table exists in the database
+        if ($this->conn->query($tableExists)->num_rows > 0) {
+            // Prepare SQL statement
+            $sql_check = "SELECT * FROM users WHERE email = ? AND password = ?";
+            $stmt_check = $this->conn->prepare($sql_check);
+            
+            // Bind parameters
+            $stmt_check->bind_param("ss", $email, $password);
+            
+            // Execute query
+            $stmt_check->execute();
+            
+            // Get result
+            $result = $stmt_check->get_result();
+            
+            // Check if user exists
+            if ($result->num_rows >= 1) {
+                // Start session
+                
+                // Redirect to dashboard
 
-            die('dfd');
-            if ($this->conn->query($tableExists)->num_rows > 0) {
-                $sql_check = "SELECT * FROM users WHERE email = ?";
-                $stmt_check = $this->conn->prepare($sql_check);
-                $stmt_check->bind_param("s", $email);
-                $stmt_check->execute();
-                $result = $stmt_check->get_result();
-                if ($result->num_rows == 1) {
-                    die('dfd');
-                    $row = $result->fetch_assoc();
-                    // Verify the password
-                    if (password_verify($password, $row['password'])) {
-                        // Redirect to dashboard if the password is correct
-                        header("Location: dashboard.php");
-                    } else {
-                        // Redirect to signin page with an error message
-                        $message = 'Incorrect username or password';
-                        header("Location: signin.php?message=" . urlencode($message));
-                    }
-                } else {
-                    // Redirect to signin page with an error message
-                    $message = 'User does not exist';
-                    header("Location: signin.php?message=" . urlencode($message));
-                    exit();
-                }
+                $_SESSION['username'] = $email;
+                header("Location: /dashboard.phtml");
+                
+                exit();
             } else {
-                $this->createTableUser($fname, $lname, $email, $phone, $this->generatePassword());
+                // die('sdfsdf');
+                // User not found, redirect to signin page with error message
+                $message = 'Incorrect username or password';
+                header("Location: /signin.phtml?message=" . urlencode($message));
+                exit();
             }
-        } catch (\Exception $e) {
-            print_r($e->getMessage() . " exception in line " . $e->getLine() . " in file " . $e->getFile()); 
-            die();
-        } catch (\Error $e) {
-            print_r($e->getMessage() . " error in line " . $e->getLine() . " in file " . $e->getFile());
-            die();
+        } else {
+            // Table not found, redirect to signin page with error message
+            $message = 'User table does not exist';
+            header("Location: /signin.phtml?message=" . urlencode($message));
+            exit();
+        } 
+    }
+
+    public function signout() {
+        // Destroy session
+        session_destroy();
+        
+        // Redirect to signin page
+        
+        $message = 'Successfully Logout';
+        header("Location: /signin.phtml?message=" . urlencode($message));
+        exit();
+    }
+
+    public function changePassword() {
+        die($_POST['newPassword']);
+        if (isset($_POST['newPassword'])) {
+            $newPassword = $_POST['newPassword'];
+            echo "Password changed successfully!";
+        } else {
+            echo "No password provided.";
         }
     }
-    
 
 }
+?>
