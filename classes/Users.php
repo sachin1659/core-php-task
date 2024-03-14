@@ -11,7 +11,7 @@ class Users {
     public function __construct() {
         $servername = "localhost";
         $username = "root"; 
-        $password = "@Gtxrtx399#"; 
+        $password = "password"; 
         $dbname = "PHP_TASK"; 
         
         // Establish database connection
